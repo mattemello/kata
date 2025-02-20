@@ -1,36 +1,33 @@
 const std = @import("std");
 
 pub fn main() !void {
-    var array = [_]u8{ 1, 2, 3 };
-    std.debug.print("value: {} \n", .{chop(9, &array)});
+    var array = [_]u8{};
+    std.debug.print("value: {} \n", .{chop(2, &array)});
 }
 
 pub fn chop(n: u8, array: []u8) bool {
-    return search(n, 0, array.len, &array);
+    if (array.len == 0) {
+        return false;
+    }
+    return search(n, &array);
 }
 
-pub fn search(n: u8, start: usize, finish: usize, array: *const []u8) bool {
-    if (start > finish) {
-        return false;
-    }
+pub fn search(n: u8, array: *const []u8) bool {
+    const pos = array.len / 2;
 
-    var value: usize = undefined;
+    std.debug.print("value array -> {d}, value pos -> {d} \n", .{ array.*[pos], pos });
 
-    if (finish / (start + 1) == 0) {
-        value = (finish / (start + 1));
-    } else {
-        value = (finish / (start + 1)) - 1;
-    }
-
-    if (n == array.*[(value)]) {
+    if (n == array.*[pos]) {
         return true;
-    } else if (start == finish or start == array.len) {
+    }
+
+    if (array.len == 1) {
         return false;
     }
 
-    if (array.*[((finish / (start + 1)) - 1)] > n) {
-        return search(n, finish / (start + 1), finish, array);
+    if (n > array.*[pos]) {
+        return search(n, &array.*[pos..array.len]);
     } else {
-        return search(n, start, finish / (start + 1), array);
+        return search(n, &array.*[0..pos]);
     }
 }
