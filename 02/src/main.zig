@@ -1,7 +1,7 @@
 const std = @import("std");
 
 pub fn main() !void {
-    var array = [_]u8{};
+    var array = [_]u8{2};
     std.debug.print("value: {} \n", .{chop(2, &array)});
 }
 
